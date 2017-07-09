@@ -12,18 +12,25 @@ my $parser = HTML::Parser->new(
     start_h     => [\&read_tags, "self, tagname, attr, text"],
     marked_sections => 1,
 );
-
 $parser->parse($html);
 
 
-## POST##
-# a = ?
-# b = ?
-#########
+# create Post String
 my $str = "a=$ids[0]&b=$ids[1]";
 $html = qx{wget --post-data="$str" -q --output-document=- "http://www2.comp.polyu.edu.hk/~14116974d/perl_test/index2.php"};
 
 print "$html\n";
+# reset ids
+@ids = ();
+
+$parser->parse($html);
+
+# create Post String
+my $str = "a=$ids[0]&b=$ids[1]";
+$html = qx{wget --post-data="$str" -q --output-document=- "http://www2.comp.polyu.edu.hk/~14116974d/perl_test/index2.php"};
+
+print "$html\n";
+
 
 sub read_tags {
     my ($self, $tagname, $attr, $text) = @_;
@@ -37,5 +44,4 @@ sub read_tags {
         #print "ID: $id\n";
         push(@ids, $id);
     }
-    
 }
