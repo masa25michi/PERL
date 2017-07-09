@@ -5,6 +5,7 @@ use HTML::Parser;
 
 my $html = qx{wget -q --output-document=- "http://www2.comp.polyu.edu.hk/~14116974d/perl_test/"};
 print "$html\n";
+my @ids = ();
 
 my $parser = HTML::Parser->new(
     api_version => 3,
@@ -14,8 +15,18 @@ my $parser = HTML::Parser->new(
 
 $parser->parse($html);
 
+
+## POST##
+# a = ?
+# b = ?
+#########
+my $str = "a=$ids[0]&b=$ids[1]";
+$html = qx{wget --post-data="$str" -q --output-document=- "http://www2.comp.polyu.edu.hk/~14116974d/perl_test/index2.php"};
+
+print "$html\n";
+
 sub read_tags {
-    my ($self, $tagname, $attr, $text) = @_;  ## 上で選んだ引数が渡ってくる
+    my ($self, $tagname, $attr, $text) = @_;
 
     my $id = '';
     if ($tagname eq 'td'){
@@ -23,6 +34,8 @@ sub read_tags {
     }
     
     if ($id != ''){
-        print "ID: $id\n";
+        #print "ID: $id\n";
+        push(@ids, $id);
     }
+    
 }
