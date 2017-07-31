@@ -4,7 +4,7 @@ use strict;
 use HTML::Parser;
 
 my $html = qx{wget -q --output-document=- "http://www2.comp.polyu.edu.hk/~14116974d/perl_test/"};
-print "$html\n";
+
 my @ids = ();
 
 my $parser = HTML::Parser->new(
